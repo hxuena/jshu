@@ -65,6 +65,18 @@ export const NavSearch = styled.input.attrs({
   &.focused {
     width: 200px;
   }
+  &.slide-enter {
+    transition: all .2s ease-out;
+  }
+  &.slide-enter-active {
+    width: 200px;
+  }
+  &.slide-exit {
+    transition: all .2s ease-out;
+  }
+  &.slide-exit-active {
+    width: 160px;
+  }
 `
 
 export const Addition = styled.div`
@@ -107,20 +119,8 @@ export const SearchWrapper = styled.div`
     border-radius: 50%;
     cursor: pointer;
     &.focused {
-      background: #777;
+      color: #fff;
+      background: #969696;
     }
   }
-  .slide-enter {
-    transition: all .2s ease-out;
-  }
-  .slide-enter-active {
-    width: 200px;
-  }
-  .slide-exit {
-    transition: all .2s ease-out;
-  }
-  .slide-exit-active {
-    width: 160px;
-  }
-
 `
