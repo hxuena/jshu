@@ -4,19 +4,29 @@ import {HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWr
 import { connect } from 'react-redux'
 import { actionCreators } from './store'
 
-const getSearchNav = (show, props) => {
-  if(show) {
+const getSearchNav = (show, props, mouseIn) => {
+  const {searchNavList, page, totalPage, mouseEnter, mouseLeave, changePage} = props
+  let list = searchNavList.toJS()
+  let pageList = []
+  if(list.length) {
+    for( let i= (page-1)*10; i<page * 10; i++) {
+      if(list[i]) {
+        pageList.push(<SearchItem key={list[i]}>{list[i]}</SearchItem>) 
+      }
+    }
+  }
+  
+  if(show || mouseIn) {
+    let spinIcon
     return (
-      <SearchNav>
+      <SearchNav onMouseEnter={mouseEnter} onMouseLeave={mouseLeave}>
         <SearchTitle>
           <span>热门搜索</span>
-          <SearchSwitch >换一批</SearchSwitch>
+          <SearchSwitch onClick={() => changePage(page, totalPage, spinIcon)}>
+            <i ref={(icon) => {spinIcon = icon}} className="iconfont spin">&#xe606;</i>
+          换一批</SearchSwitch>
         </SearchTitle>
-        {
-          props.searchNavList.map((item, index) => (
-            <SearchItem key={index}>{item}</SearchItem>
-          ))
-        }
+        { pageList }
       </SearchNav>
     ) 
   } else {
@@ -25,6 +35,7 @@ const getSearchNav = (show, props) => {
 }
 
 const Header = (props) => {
+  const {focused, mouseIn, searchNavList, inputFocus, inputBlur} = props
   return (
     <HeaderWrapper>
       <Logo />
@@ -33,16 +44,16 @@ const Header = (props) => {
         <NavItem className="left">下载App</NavItem>
         <SearchWrapper>
           <CSSTransition
-            in={props.focused}
+            in={focused}
             timeout={200}
             classNames="slide">
-              <NavSearch className={props.focused ? 'focused' : ''}
-              onFocus={props.inputFocus}
-              onBlur={props.inputBlur}
+              <NavSearch className={focused ? 'focused' : ''}
+              onFocus={() => {inputFocus(searchNavList)}}
+              onBlur={inputBlur}
             ></NavSearch>
           </CSSTransition>
-          <i className={props.focused ? 'focused iconfont' : 'iconfont'}>&#xe637;</i>
-            { getSearchNav(props.focused, props) }
+          <i className={focused ? 'focused iconfont zoom' : 'iconfont zoom'}>&#xe637;</i>
+            { getSearchNav(focused, props, mouseIn) }
         </SearchWrapper>
         <NavItem className="right">登录</NavItem>
         <NavItem className="right">
@@ -59,17 +70,43 @@ const Header = (props) => {
 const mapStateToProps = (state) => {
   return {
     focused: state.getIn(['header','focused']),
-    searchNavList: state.getIn(['header','searchNavList'])
+    mouseIn: state.getIn(['header','mouseIn']),
+    searchNavList: state.getIn(['header','searchNavList']),
+    page: state.getIn(['header','page']),
+    totalPage: state.getIn(['header','totalPage'])
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    inputFocus() {
+    inputFocus(searchNavList) {
+      //searchNavList 是immutable类型的数组
+      if(!searchNavList.size) {
+        dispatch(actionCreators.getSearchNavList())
+      }
       dispatch(actionCreators.searchFocus())
-      dispatch(actionCreators.getSearchNavList())
     },
     inputBlur() {
       dispatch(actionCreators.searchBlur())
+    },
+    mouseEnter() {
+      dispatch(actionCreators.mouseEnter())
+    },
+    mouseLeave() {
+      dispatch(actionCreators.mouseLeave())
+    },
+    changePage(page, totalPage, spin) {
+      let originDeg = spin.style.transform.replace(/[^0-9]/ig, '')
+      if(originDeg){
+        originDeg = parseInt(originDeg, 10)
+      } else {
+        originDeg = 0
+      }
+      spin.style.transform = `rotate(${originDeg + 360}deg)`
+      if(page < totalPage) {
+        dispatch(actionCreators.changePage(page + 1))
+      } else {
+        dispatch(actionCreators.changePage(1))
+      }
     }
   }
 }
