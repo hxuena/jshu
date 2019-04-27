@@ -1,14 +1,18 @@
-const defaultState = {
-  focused: false
-}
+import * as constants from './constants';
+import { fromJS } from 'immutable';
+
+const defaultState =fromJS({
+  focused: false,
+  searchNavList: ['react', 'vue', '区块链', '微前端', '图形学', 'WebGL', 
+    '美食', '旅游', ]
+})
 
 export default (state = defaultState, action) => {
-  const newState = JSON.parse(JSON.stringify(state))
-  if(action.type === 'input_focus') {
-    newState.focused = true
+  if(action.type === constants.SEARCH_FOCUS) {
+    return state.set('focused', true)
   }
-  if(action.type === 'input_blur') {
-    newState.focused = false
+  if(action.type === constants.SEARCH_BLUR) {
+    return state.set('focused', false)
   }
-  return newState;
+  return state;
 }

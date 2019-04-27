@@ -50,7 +50,7 @@ export const NavSearch = styled.input.attrs({
   margin-top: 9px;
   margin-left: 20px;
   padding: 0 40px 0 20px;
-  width: 160px;
+  width: 240px;
   height: 38px;
   box-sizing: border-box;
   outline: none;
@@ -63,19 +63,19 @@ export const NavSearch = styled.input.attrs({
     color: #999;
   }
   &.focused {
-    width: 200px;
+    width: 320px;
   }
   &.slide-enter {
     transition: all .2s ease-out;
   }
   &.slide-enter-active {
-    width: 200px;
+    width: 320px;
   }
   &.slide-exit {
     transition: all .2s ease-out;
   }
   &.slide-exit-active {
-    width: 160px;
+    width: 240px;
   }
 `
 
@@ -122,5 +122,53 @@ export const SearchWrapper = styled.div`
       color: #fff;
       background: #969696;
     }
+  }
+`
+
+export const SearchNav = styled.div`
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(0,0,0,.2);
+  margin-top: 9px;
+  width: 210px;
+  left: 20px;
+  top: 100%;
+  border-radius: 4px;
+  padding: 20px 20px 10px;
+  border-bottom: 1px solid #f0f0f0;
+`
+
+export const SearchTitle = styled.div`
+  height: 20px;
+  margin-bottom: 10px;
+  & span {
+    float: left;
+    font-size: 14px;
+    color: #969696;
+  }
+  & a {
+    float: right;
+    font-size: 13px;
+    color: #969696;
+    background-color: transparent;
+    border-width: 0;
+    padding: 0;
+  }
+`
+
+export const SearchItem = styled.a`
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 2px 6px;
+  line-height: 19.6px;
+  font-size: 12px;
+  color: #787878;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  &:hover {
+    color: #333;
+    border-color: #b4b4b4;
   }
 `

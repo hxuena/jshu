@@ -1,7 +1,28 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWrapper} from './style'
+import {HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWrapper, SearchNav, SearchTitle, SearchItem} from './style'
 import { connect } from 'react-redux'
+import { actionCreators } from './store'
+
+const getSearchNav = (val, props) => {
+  if(val) {
+    return (
+      <SearchNav>
+        <SearchTitle>
+          <span>热门搜索</span>
+          <a>换一批</a>
+        </SearchTitle>
+        {
+          props.searchNavList.map((item, index) => (
+            <SearchItem key={index}>{item}</SearchItem>
+          ))
+        }
+      </SearchNav>
+    ) 
+  } else {
+    return null
+  }
+}
 
 const Header = (props) => {
   return (
@@ -21,6 +42,7 @@ const Header = (props) => {
             ></NavSearch>
           </CSSTransition>
           <i className={props.focused ? 'focused iconfont' : 'iconfont'}>&#xe637;</i>
+            { getSearchNav(props.focused, props) }
         </SearchWrapper>
         <NavItem className="right">登录</NavItem>
         <NavItem className="right">
@@ -36,22 +58,17 @@ const Header = (props) => {
 }
 const mapStateToProps = (state) => {
   return {
-    focused: state.header.focused
+    focused: state.getIn(['header','focused']),
+    searchNavList: state.getIn(['header','searchNavList'])
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     inputFocus() {
-      const action = {
-        type: 'input_focus'
-      }
-      dispatch(action)
+      dispatch(actionCreators.searchFocus())
     },
     inputBlur() {
-      const action = {
-        type: 'input_blur'
-      }
-      dispatch(action)
+      dispatch(actionCreators.searchBlur())
     }
   }
 }
