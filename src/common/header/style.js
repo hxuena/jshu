@@ -146,14 +146,15 @@ export const SearchTitle = styled.div`
     font-size: 14px;
     color: #969696;
   }
-  & a {
-    float: right;
-    font-size: 13px;
-    color: #969696;
-    background-color: transparent;
-    border-width: 0;
-    padding: 0;
-  }
+`
+
+export const SearchSwitch = styled.a`
+  float: right;
+  font-size: 13px;
+  color: #969696;
+  background-color: transparent;
+  border-width: 0;
+  padding: 0;
 `
 
 export const SearchItem = styled.a`

@@ -1,16 +1,16 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWrapper, SearchNav, SearchTitle, SearchItem} from './style'
+import {HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchWrapper, SearchNav, SearchTitle, SearchItem, SearchSwitch} from './style'
 import { connect } from 'react-redux'
 import { actionCreators } from './store'
 
-const getSearchNav = (val, props) => {
-  if(val) {
+const getSearchNav = (show, props) => {
+  if(show) {
     return (
       <SearchNav>
         <SearchTitle>
           <span>热门搜索</span>
-          <a>换一批</a>
+          <SearchSwitch >换一批</SearchSwitch>
         </SearchTitle>
         {
           props.searchNavList.map((item, index) => (
@@ -66,6 +66,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     inputFocus() {
       dispatch(actionCreators.searchFocus())
+      dispatch(actionCreators.getSearchNavList())
     },
     inputBlur() {
       dispatch(actionCreators.searchBlur())

@@ -3,8 +3,7 @@ import { fromJS } from 'immutable';
 
 const defaultState =fromJS({
   focused: false,
-  searchNavList: ['react', 'vue', '区块链', '微前端', '图形学', 'WebGL', 
-    '美食', '旅游', ]
+  searchNavList: []
 })
 
 export default (state = defaultState, action) => {
@@ -13,6 +12,9 @@ export default (state = defaultState, action) => {
   }
   if(action.type === constants.SEARCH_BLUR) {
     return state.set('focused', false)
+  }
+  if(action.type === constants.SEARCH_NAV_LIST) {
+    return state.set('searchNavList', action.data)
   }
   return state;
 }
